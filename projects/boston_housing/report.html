@@ -13767,7 +13767,7 @@ RK5CYII=
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer: </strong>
-when model is trained with maximum depth of 1 , it suffers with high variance as it overfits the dataset and loses the generality to predict training points accurately.On the other hand , model trained with maximum depth of 10 underfits the data due to high bias, meaning it has enough data but not complex enough to capture underlying relationships.</p>
+when model trained with maximum depth of 10, it underfits the data due to high bias, meaning it has enough data but not complex enough to capture underlying relationships.On the other hand, model trained with maximum depth of 1 , ,it suffers with high variance as it overfits the dataset and loses the generality to predict training points accurately</p>
 
 </div>
 </div>
@@ -13788,7 +13788,7 @@ when model is trained with maximum depth of 1 , it suffers with high variance as
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer: </strong>
-Decision tree at maximum depth of 4 best generalises to unseen data.The reason for choosing this max depth is region before this suffers from high variance problem and after this point suffers from high bias problem.</p>
+Decision tree at maximum depth of 4 best generalises to unseen data.The reason for choosing this max depth is region after this suffers from high bias problem and before this point suffers from high variance problem.</p>
 
 </div>
 </div>
@@ -13854,8 +13854,9 @@ prints the set of paramter values for which we get the best performance.</p>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p><strong>Answer: </strong></p>
-<p>K-fold cross-validation involves partitioning a sample of data into complementary subsets, performing the analysis on one subset (called the training set), and validating the analysis on the other subset (called the validation set or testing set). To reduce variability, multiple rounds of cross-validation are performed using different partitions, and the validation results are averaged over the rounds.</p>
+<p>K-fold cross-validation involves partitioning a sample of data into training and testing data sets, performing the analysis on the training set, and validating the analysis on validation set or testing set.To reduce variability, multiple rounds of cross-validation are performed using different partitions, and the validation results are averaged over the rounds.</p>
 <p>One of the main reasons for using K-fold cross-validation with GridSearch validation is when we are partitioning the data set into two sets of 70% for training and 30% for test and there is not enough data available to partition it into separate training and test sets without losing significant modelling or testing capability. In these cases, a fair way to properly estimate model prediction performance is to use K-fold cross-validation as a powerful general technique.</p>
+<p>Also, through K-fold cross validation we take into account all the fold one by one as training data making sure the estimator gets properly trained, because there may be the case that the single split we are using to train and test our dataset may contain skewed distribution of labels hence affecting our estimator's performance.</p>
 
 </div>
 </div>
@@ -13892,12 +13893,12 @@ For the <code>fit_model</code> function in the code cell below, you will need to
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># TODO: Import &#39;make_scorer&#39;, &#39;DecisionTreeRegressor&#39;, and &#39;GridSearchCV&#39;</span>
 <span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">tree</span>
-<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">make_scorer</span><span class="p">,</span><span class="n">accuracy_score</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">make_scorer</span><span class="p">,</span><span class="n">r2_score</span>
 <span class="kn">from</span> <span class="nn">sklearn.grid_search</span> <span class="kn">import</span> <span class="n">GridSearchCV</span>
 <span class="kn">from</span> <span class="nn">sklearn.cross_validation</span> <span class="kn">import</span> <span class="n">ShuffleSplit</span>
 <span class="k">def</span> <span class="nf">fit_model</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
@@ -13914,12 +13915,12 @@ For the <code>fit_model</code> function in the code cell below, you will need to
 
     <span class="c1"># TODO: Create a dictionary for the parameter &#39;max_depth&#39; with a range from 1 to 10</span>
     <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;max_depth&#39;</span><span class="p">:</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">11</span><span class="p">)}</span>
-   
+
     <span class="c1"># TODO: Transform &#39;performance_metric&#39; into a scoring function using &#39;make_scorer&#39;</span>
-    <span class="n">scoring_fnc</span> <span class="o">=</span> <span class="n">make_scorer</span><span class="p">(</span><span class="n">accuracy_score</span><span class="p">)</span>
+    <span class="n">scoring_fnc</span> <span class="o">=</span> <span class="n">make_scorer</span><span class="p">(</span><span class="n">r2_score</span><span class="p">)</span>
 
     <span class="c1"># TODO: Create the grid search object</span>
-    <span class="n">grid</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">regressor</span><span class="p">,</span><span class="n">param_grid</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+    <span class="n">grid</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">regressor</span><span class="p">,</span><span class="n">param_grid</span><span class="o">=</span><span class="n">params</span><span class="p">,</span><span class="n">cv</span><span class="o">=</span><span class="n">cv_sets</span><span class="p">,</span><span class="n">scoring</span><span class="o">=</span><span class="n">scoring_fnc</span><span class="p">)</span>
 
     <span class="c1"># Fit the grid search object to the data to compute the optimal model</span>
     <span class="n">grid</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
@@ -13956,7 +13957,7 @@ For the <code>fit_model</code> function in the code cell below, you will need to
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In&nbsp;[48]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Fit the training data to the model using grid search</span>
@@ -14042,7 +14043,7 @@ Parameter 'max_depth' is 4 for the optimal model which matches with our intuitio
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="prompt input_prompt">In&nbsp;[49]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Produce a matrix for client data</span>
@@ -14050,9 +14051,15 @@ Parameter 'max_depth' is 4 for the optimal model which matches with our intuitio
                <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">22</span><span class="p">],</span> <span class="c1"># Client 2</span>
                <span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">12</span><span class="p">]]</span>  <span class="c1"># Client 3</span>
 
+<span class="n">sum_predicted</span><span class="o">=</span><span class="mi">0</span>
 <span class="c1"># Show predictions</span>
 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">price</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">reg</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">client_data</span><span class="p">)):</span>
     <span class="k">print</span> <span class="s2">&quot;Predicted selling price for Client {}&#39;s home: ${:,.2f}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">price</span><span class="p">)</span>
+    <span class="n">sum_predicted</span><span class="o">+=</span><span class="n">price</span>
+<span class="k">print</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">Stats about the dataset:&quot;</span>
+<span class="k">print</span> <span class="n">data</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+<span class="k">print</span> <span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">Mean price for predicted houses: &quot;</span><span class="p">,</span><span class="n">sum_predicted</span><span class="o">/</span><span class="mi">3</span>
+<span class="k">print</span> <span class="s2">&quot;Mean price for all the houses in the dataset: &quot;</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;MEDV&#39;</span><span class="p">])</span>
 </pre></div>
 
 </div>
@@ -14070,6 +14077,22 @@ Parameter 'max_depth' is 4 for the optimal model which matches with our intuitio
 <pre>Predicted selling price for Client 1&#39;s home: $418,913.79
 Predicted selling price for Client 2&#39;s home: $230,781.25
 Predicted selling price for Client 3&#39;s home: $892,850.00
+
+
+Stats about the dataset:
+               RM       LSTAT     PTRATIO          MEDV
+count  489.000000  489.000000  489.000000  4.890000e+02
+mean     6.240288   12.939632   18.516564  4.543429e+05
+std      0.643650    7.081990    2.111268  1.653403e+05
+min      3.561000    1.980000   12.600000  1.050000e+05
+25%      5.880000    7.370000   17.400000  3.507000e+05
+50%      6.185000   11.690000   19.100000  4.389000e+05
+75%      6.575000   17.120000   20.200000  5.187000e+05
+max      8.398000   37.970000   22.000000  1.024800e+06
+
+
+Mean price for predicted houses:  514181.681034
+Mean price for all the houses in the dataset:  454342.944785
 </pre>
 </div>
 </div>
@@ -14083,14 +14106,11 @@ Predicted selling price for Client 3&#39;s home: $892,850.00
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p><strong>Answer: </strong>
-The predictions made with the estimator is quite reasonable.I would sugguest every client to sell his/her house at the predicted price.As the prices go with the trend as expected with Data Exploration section. All the values are lying in max - min range.</p>
-<p>prices are also following trend:</p>
-<ul>
-<li>A home that has an 'RM' value higher will be costlier, than house with lower 'RM' value. Hence, 'MEDV' value will be higher.</li>
-<li>A home that has an 'LSTAT'value lower will be costlier ,implying the house is in a good locality. Hence, 'MEDV' value will be higher.</li>
-<li>A home that has an 'PTRATIO' value lower will be costlier, because lower the student to teachers ratio, more is the fees for the school,school will be in a good locality. Hence, 'MEDV' value will be higher.</li>
-</ul>
+<p><strong>Answer: </strong> <br>
+Client 1: I would recommend a selling price of 418,913.79 .<br>
+Client 2: I would recommend a selling price of 230,781.25 .<br>
+Clintt 3: I would recommend a selling price of 892,850.00 .<br>
+The calculated values for the three house seems to be valid as they are lying within range of minimum and maximum prices and also the mean these values coming close to expected mean of MEDV.</p>
 
 </div>
 </div>
@@ -14107,7 +14127,7 @@ The predictions made with the estimator is quite reasonable.I would sugguest eve
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
+<div class="prompt input_prompt">In&nbsp;[47]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">vs</span><span class="o">.</span><span class="n">PredictTrials</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">prices</span><span class="p">,</span> <span class="n">fit_model</span><span class="p">,</span> <span class="n">client_data</span><span class="p">)</span>
@@ -14126,17 +14146,17 @@ The predictions made with the estimator is quite reasonable.I would sugguest eve
 
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>Trial 1: $391,183.33
-Trial 2: $411,417.39
+Trial 2: $424,935.00
 Trial 3: $415,800.00
-Trial 4: $428,316.00
+Trial 4: $420,622.22
 Trial 5: $413,334.78
 Trial 6: $411,931.58
 Trial 7: $399,663.16
 Trial 8: $407,232.00
-Trial 9: $402,531.82
+Trial 9: $351,577.61
 Trial 10: $413,700.00
 
-Range in prices: $37,132.67
+Range in prices: $73,357.39
 </pre>
 </div>
 </div>
