@@ -75,7 +75,7 @@ class Environment(object):
 
         # Primary agent and associated parameters
         self.primary_agent = None  # to be set explicitly
-        self.enforce_deadline = False
+        self.enforce_deadline = True
 
         # Trial data (updated at the end of each trial)
         self.trial_data = {
@@ -401,8 +401,7 @@ class Environment(object):
         dx = dx1 if dx1 < dx2 else dx2
 
         dy1 = abs(b[1] - a[1])
-        dy2 = abs(self.
-            grid_size[1] - dy1)
+        dy2 = abs(self.grid_size[1] - dy1)
         dy = dy1 if dy1 < dy2 else dy2
 
         return dx + dy
