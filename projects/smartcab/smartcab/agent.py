@@ -51,8 +51,8 @@ class LearningAgent(Agent):
             #self.epsilon = self.epsilon - (0.05)
             
             #decaying both epsilon and alpha
-            self.epsilon = math.exp(-self.alpha*self.trial_count)
-            #self.epsilon = math.fabs(math.cos(self.alpha*self.trial_count))
+            #self.epsilon = math.exp(-self.alpha*self.trial_count)
+            self.epsilon = math.fabs(math.cos(self.alpha*self.trial_count))
             #self.alpha = math.cos(0.1809*self.trial_count)
             self.trial_count+=1.0
             
@@ -196,8 +196,8 @@ def run():
     #   learning   - set to True to force the driving agent to use Q-learning
     #    * epsilon - continuous value for the exploration factor, default is 1
     #    * alpha   - continuous value for the learning rate, default is 0.5
-    
-    agent = env.create_agent(LearningAgent, learning=True,alpha=0.01)
+    agent = env.create_agent(LearningAgent)
+    #agent = env.create_agent(LearningAgent, learning=True,alpha=0.01)
     
     ##############
     # Follow the driving agent
@@ -214,9 +214,9 @@ def run():
     #   log_metrics  - set to True to log trial and simulation results to /logs
     #   optimized    - set to True to change the default log file name
     
-    #sim = Simulator(env,update_delay=0.01, display=True,log_metrics=True)  
-    #sim = Simulator(env,update_delay=0.0   1, display=True,log_metrics=True)
-    sim = Simulator(env,update_delay=0.001,log_metrics=True,optimized=True)
+    sim = Simulator(env,update_delay=0.01, display=True,log_metrics=True)  
+    #sim = Simulator(env,update_delay=0.01, display=True,log_metrics=True)
+    #sim = Simulator(env,update_delay=0.001,log_metrics=True,optimized=True)
     ##############
     # Run the simulator
     # Flags:
