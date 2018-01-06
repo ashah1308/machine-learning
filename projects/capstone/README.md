@@ -1,11 +1,5 @@
-# Machine Learning Engineer Nanodegree
-## Specializations
-## Project: Capstone Proposal and Capstone Project
+Link to project proposal review
+[review](https://review.udacity.com/#!/reviews/944197)
 
-**Note**
-
-The Capstone is a two-staged project. The first is the proposal component, where you can receive valuable feedback about your project idea, design, and proposed solution. This must be completed prior to your implementation and submitting for the capstone project. 
-
-You can find the [capstone proposal rubric here](https://review.udacity.com/#!/rubrics/410/view), and the [capstone project rubric here](https://review.udacity.com/#!/rubrics/108/view). Please ensure that you are following directions correctly before submitting these two stages which encapsulate your capstone.
-
-Please email [machine-support@udacity.com](mailto:machine-support@udacity.com) if you have any questions.
+Based on Research Paper
+[can machines learn genres](http://cs229.stanford.edu/proj2014/Aaron%20Kravitz,%20Eliza%20Lupone,%20Ryan%20Diaz,%20Can%20Machines%20Learn%20Genres.pdf)
